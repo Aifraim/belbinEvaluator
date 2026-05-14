@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Belbin Team Role Evaluator</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div class="container">
+    <h1>Belbin Team Role Evaluator</h1>
+    <p class="subtitle">Discover your natural team role in 7 short sections.</p>
+
+    <div th:if="${error}" class="alert alert-error">
+        <span th:text="${error}"></span>
+    </div>
+
+    <form action="/start" method="post" class="start-form">
+        <label for="participantName">Your name</label>
+        <input type="text"
+               id="participantName"
+               name="participantName"
+               placeholder="Enter your name"
+               required
+               autofocus>
+        <button type="submit">Start the Test →</button>
+    </form>
+
+    <div class="info-box">
+        <h3>How it works</h3>
+        <ul>
+            <li>You will go through <strong>7 sections</strong>, each with 8 statements.</li>
+            <li>Distribute <strong>exactly 10 points</strong> across the statements in each section.</li>
+            <li>You may give all 10 to one statement, or spread them across several.</li>
+            <li>There are no right or wrong answers — be honest!</li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>

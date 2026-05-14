@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="'Section ' + ${sectionNumber} + ' – Belbin Evaluator'">Section</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Progress bar -->
+    <div class="progress-bar-wrap">
+        <div class="progress-bar"
+             th:style="'width: ' + (${sectionNumber} * 100 / ${totalSections}) + '%'">
+        </div>
+    </div>
+    <p class="progress-label"
+       th:text="'Section ' + ${sectionNumber} + ' of ' + ${totalSections}">
+    </p>
+
+    <h2 th:text="'Hello, ' + ${submission.participantName} + '!'"></h2>
+    <p class="instructions">
+        Distribute <strong>exactly 10 points</strong> across the statements below.
+        You can give all 10 to one statement or spread them however you like.
+    </p>
+
+    <!-- Error message -->
+    <div th:if="${error}" class="alert alert-error">
+        <span th:text="${error}"></span>
+    </div>
+
+    <form th:action="@{/test/{id}/section/{sec}(id=${submission.id},sec=${sectionNumber})}"
+          method="post"
+          id="sectionForm">
+
+        <div class="questions">
+            <div class="question-row" th:each="question : ${questions}">
+                <label th:for="'answer_' + ${question.id}"
+                       th:text="${question.statementIndex} + '. ' + ${question.text}">
+                </label>
+                <input type="number"
+                       th:id="'answer_' + ${question.id}"
+                       th:name="'answer_' + ${question.id}"
+                       value="0"
+                       min="0"
+                       max="10"
+                       class="points-input"
+                       oninput="updateTotal()">
+            </div>
+        </div>
+
+        <!-- Running total -->
+        <div class="total-display">
+            Points used: <span id="totalUsed">0</span> / 10
+        </div>
+
+        <button type="submit"
+                th:text="${isLastSection} ? 'Finish &amp; See Results →' : 'Next Section →'">
+        </button>
+
+    </form>
+</div>
+
+<script>
+    function updateTotal() {
+        const inputs = document.querySelectorAll('.points-input');
+        let total = 0;
+        inputs.forEach(input => total += parseInt(input.value) || 0);
+        const display = document.getElementById('totalUsed');
+        display.textContent = total;
+        display.style.color = total === 10 ? 'green' : 'red';
+    }
+    updateTotal();
+</script>
+
+</body>
+</html>

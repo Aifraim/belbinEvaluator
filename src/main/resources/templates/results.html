@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Results – Belbin Evaluator</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div class="container">
+
+    <h1 th:text="'Results for ' + ${submission.participantName}"></h1>
+    <p class="subtitle" th:text="'Test completed on ' + ${#temporals.format(submission.takenAt, 'dd MMM yyyy, HH:mm')}"></p>
+
+    <!-- Top 3 roles highlight -->
+    <div class="top-roles">
+        <h2>Your Top Roles</h2>
+        <div class="top-roles-grid">
+            <div class="top-role-card" th:each="role, iter : ${topRoles}">
+                <div class="role-rank" th:text="'#' + (${iter.index} + 1)"></div>
+                <div class="role-name" th:text="${role.name().replace('_', ' ')}"></div>
+                <div class="role-score"
+                     th:text="${percentages.get(role)} + '%'">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Full ranking table -->
+    <div class="full-results">
+        <h2>Full Breakdown</h2>
+        <table class="results-table">
+            <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Role</th>
+                <th>Points</th>
+                <th>Percentage</th>
+                <th>Bar</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="entry, iter : ${rankedRoles}">
+                <td th:text="${iter.index} + 1"></td>
+                <td th:text="${entry.key.name().replace('_', ' ')}"></td>
+                <td th:text="${entry.value}"></td>
+                <td th:text="${percentages.get(entry.key)} + '%'"></td>
+                <td>
+                    <div class="bar-wrap">
+                        <div class="bar"
+                             th:style="'width: ' + ${percentages.get(entry.key)} + '%'">
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Retake -->
+    <div class="actions">
+        <a href="/" class="btn">Take the Test Again</a>
+    </div>
+
+</div>
+
+</body>
+</html>
