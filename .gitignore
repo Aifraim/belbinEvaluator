@@ -18,6 +18,8 @@ target/
 *.iws
 *.iml
 *.ipr
+belbin-db.mv.db
+*.db
 
 ### NetBeans ###
 /nbproject/private/

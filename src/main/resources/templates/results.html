@@ -18,43 +18,59 @@
         <div class="top-roles-grid">
             <div class="top-role-card" th:each="role, iter : ${topRoles}">
                 <div class="role-rank" th:text="'#' + (${iter.index} + 1)"></div>
-                <div class="role-name" th:text="${role.name().replace('_', ' ')}"></div>
-                <div class="role-score"
-                     th:text="${percentages.get(role)} + '%'">
+                <div class="role-name" th:text="${role.displayName}"></div>
+                <div class="role-category"
+                     th:text="${role.category.name() == 'SOCIAL'} ? '🤝 Social'
+                             : (${role.category.name() == 'THINKING'} ? '💡 Thinking'
+                             : '⚙️ Task')">
                 </div>
+                <div class="role-score" th:text="${percentages.get(role)} + '%'"></div>
             </div>
         </div>
     </div>
 
-    <!-- Full ranking table -->
+    <!-- Grouped breakdown by category -->
     <div class="full-results">
         <h2>Full Breakdown</h2>
-        <table class="results-table">
-            <thead>
-            <tr>
-                <th>Rank</th>
-                <th>Role</th>
-                <th>Points</th>
-                <th>Percentage</th>
-                <th>Bar</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="entry, iter : ${rankedRoles}">
-                <td th:text="${iter.index} + 1"></td>
-                <td th:text="${entry.key.name().replace('_', ' ')}"></td>
-                <td th:text="${entry.value}"></td>
-                <td th:text="${percentages.get(entry.key)} + '%'"></td>
-                <td>
-                    <div class="bar-wrap">
-                        <div class="bar"
-                             th:style="'width: ' + ${percentages.get(entry.key)} + '%'">
+
+        <div th:each="group : ${groupedRoles}">
+
+            <div class="category-header"
+                 th:classappend="${group.key.name() == 'SOCIAL'} ? 'social'
+                               : (${group.key.name() == 'THINKING'} ? 'thinking'
+                               : 'task')">
+                <span th:text="${group.key.name() == 'SOCIAL'} ? '🤝 Social Roles'
+                             : (${group.key.name() == 'THINKING'} ? '💡 Thinking Roles'
+                             : '⚙️ Task Roles')">
+                </span>
+            </div>
+
+            <table class="results-table">
+                <thead>
+                <tr>
+                    <th>Role</th>
+                    <th>Points</th>
+                    <th>Percentage</th>
+                    <th>Bar</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="entry : ${group.value}">
+                    <td th:text="${entry.key.displayName}"></td>
+                    <td th:text="${entry.value}"></td>
+                    <td th:text="${percentages.get(entry.key)} + '%'"></td>
+                    <td>
+                        <div class="bar-wrap">
+                            <div class="bar"
+                                 th:style="'width: ' + ${percentages.get(entry.key)} + '%'">
+                            </div>
                         </div>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
     </div>
 
     <!-- Retake -->

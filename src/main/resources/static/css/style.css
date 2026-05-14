@@ -272,3 +272,31 @@ button[type="submit"]:hover, .btn:hover {
     text-align: center;
     margin-top: 1rem;
 }
+
+/* ── Category headers ── */
+.category-header {
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.category-header.social {
+    background: #e8f5e9;
+    color: #2e7d32;
+    border-left: 4px solid #43a047;
+}
+
+.category-header.thinking {
+    background: #e3f2fd;
+    color: #1565c0;
+    border-left: 4px solid #1e88e5;
+}
+
+.category-header.task {
+    background: #fff3e0;
+    color: #e65100;
+    border-left: 4px solid #fb8c00;
+}

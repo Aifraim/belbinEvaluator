@@ -2,6 +2,7 @@ package com.rf2.belbineval.controller;
 
 import com.rf2.belbineval.model.Answer;
 import com.rf2.belbineval.model.BelbinRole;
+import com.rf2.belbineval.model.RoleCategory;
 import com.rf2.belbineval.model.Submission;
 import com.rf2.belbineval.service.ScoringService;
 import com.rf2.belbineval.service.SubmissionService;
@@ -11,8 +12,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -39,6 +43,19 @@ public class ResultsController {
         model.addAttribute("percentages", percentages);
         model.addAttribute("topRoles", topRoles);
         model.addAttribute("rankedRoles", rankedRoles);
+
+        // Group ranked roles by category
+        Map<RoleCategory, List<Map.Entry<BelbinRole, Integer>>> groupedRoles = Arrays.stream(RoleCategory.values())
+                .collect(Collectors.toMap(
+                        category -> category,
+                        category -> rankedRoles.stream()
+                                .filter(e -> e.getKey().getCategory() == category)
+                                .collect(Collectors.toList()),
+                        (a, b) -> a,
+                        LinkedHashMap::new
+                ));
+
+        model.addAttribute("groupedRoles", groupedRoles);
 
         return "results";
     }
