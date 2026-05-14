@@ -12,20 +12,57 @@
     <h1 th:text="'Results for ' + ${submission.participantName}"></h1>
     <p class="subtitle" th:text="'Test completed on ' + ${#temporals.format(submission.takenAt, 'dd MMM yyyy, HH:mm')}"></p>
 
-    <!-- Top 3 roles highlight -->
+    <!-- Top 3 roles highlight - podium -->
     <div class="top-roles">
         <h2>Your Top Roles</h2>
-        <div class="top-roles-grid">
-            <div class="top-role-card" th:each="role, iter : ${topRoles}">
-                <div class="role-rank" th:text="'#' + (${iter.index} + 1)"></div>
-                <div class="role-name" th:text="${role.displayName}"></div>
-                <div class="role-category"
-                     th:text="${role.category.name() == 'SOCIAL'} ? '🤝 Social'
-                             : (${role.category.name() == 'THINKING'} ? '💡 Thinking'
+
+        <div class="podium">
+
+            <!-- 2nd place (left) -->
+            <div class="podium-slot second" th:if="${topRoles.size() >= 2}">
+                <div class="podium-card">
+                    <div class="podium-rank">🥈</div>
+                    <div class="podium-name" th:text="${topRoles[1].displayName}"></div>
+                    <div class="podium-category"
+                         th:text="${topRoles[1].category.name() == 'SOCIAL'} ? '🤝 Social'
+                             : (${topRoles[1].category.name() == 'THINKING'} ? '💡 Thinking'
                              : '⚙️ Task')">
+                    </div>
+                    <div class="podium-score" th:text="${percentages.get(topRoles[1])} + '%'"></div>
                 </div>
-                <div class="role-score" th:text="${percentages.get(role)} + '%'"></div>
+                <div class="podium-block second-block">2</div>
             </div>
+
+            <!-- 1st place (center, tallest) -->
+            <div class="podium-slot first" th:if="${topRoles.size() >= 1}">
+                <div class="podium-card">
+                    <div class="podium-rank">🥇</div>
+                    <div class="podium-name" th:text="${topRoles[0].displayName}"></div>
+                    <div class="podium-category"
+                         th:text="${topRoles[0].category.name() == 'SOCIAL'} ? '🤝 Social'
+                             : (${topRoles[0].category.name() == 'THINKING'} ? '💡 Thinking'
+                             : '⚙️ Task')">
+                    </div>
+                    <div class="podium-score" th:text="${percentages.get(topRoles[0])} + '%'"></div>
+                </div>
+                <div class="podium-block first-block">1</div>
+            </div>
+
+            <!-- 3rd place (right) -->
+            <div class="podium-slot third" th:if="${topRoles.size() >= 3}">
+                <div class="podium-card">
+                    <div class="podium-rank">🥉</div>
+                    <div class="podium-name" th:text="${topRoles[2].displayName}"></div>
+                    <div class="podium-category"
+                         th:text="${topRoles[2].category.name() == 'SOCIAL'} ? '🤝 Social'
+                             : (${topRoles[2].category.name() == 'THINKING'} ? '💡 Thinking'
+                             : '⚙️ Task')">
+                    </div>
+                    <div class="podium-score" th:text="${percentages.get(topRoles[2])} + '%'"></div>
+                </div>
+                <div class="podium-block third-block">3</div>
+            </div>
+
         </div>
     </div>
 
