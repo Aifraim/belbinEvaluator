@@ -12,7 +12,7 @@
     <h1 th:text="'Results for ' + ${submission.participantName}"></h1>
     <p class="subtitle" th:text="'Test completed on ' + ${#temporals.format(submission.takenAt, 'dd MMM yyyy, HH:mm')}"></p>
 
-    <!-- Top 3 roles highlight - podium -->
+    <!-- Podium -->
     <div class="top-roles">
         <h2>Your Top Roles</h2>
 
@@ -25,10 +25,11 @@
                     <div class="podium-name" th:text="${topRoles[1].displayName}"></div>
                     <div class="podium-category"
                          th:text="${topRoles[1].category.name() == 'SOCIAL'} ? '🤝 Social'
-                             : (${topRoles[1].category.name() == 'THINKING'} ? '💡 Thinking'
-                             : '⚙️ Task')">
+                                 : (${topRoles[1].category.name() == 'THINKING'} ? '💡 Thinking'
+                                 : '⚙️ Task')">
                     </div>
                     <div class="podium-score" th:text="${percentages.get(topRoles[1])} + '%'"></div>
+                    <div class="podium-description" th:text="${topRoles[1].description}"></div>
                 </div>
                 <div class="podium-block second-block">2</div>
             </div>
@@ -40,10 +41,11 @@
                     <div class="podium-name" th:text="${topRoles[0].displayName}"></div>
                     <div class="podium-category"
                          th:text="${topRoles[0].category.name() == 'SOCIAL'} ? '🤝 Social'
-                             : (${topRoles[0].category.name() == 'THINKING'} ? '💡 Thinking'
-                             : '⚙️ Task')">
+                                 : (${topRoles[0].category.name() == 'THINKING'} ? '💡 Thinking'
+                                 : '⚙️ Task')">
                     </div>
                     <div class="podium-score" th:text="${percentages.get(topRoles[0])} + '%'"></div>
+                    <div class="podium-description" th:text="${topRoles[0].description}"></div>
                 </div>
                 <div class="podium-block first-block">1</div>
             </div>
@@ -55,12 +57,52 @@
                     <div class="podium-name" th:text="${topRoles[2].displayName}"></div>
                     <div class="podium-category"
                          th:text="${topRoles[2].category.name() == 'SOCIAL'} ? '🤝 Social'
-                             : (${topRoles[2].category.name() == 'THINKING'} ? '💡 Thinking'
-                             : '⚙️ Task')">
+                                 : (${topRoles[2].category.name() == 'THINKING'} ? '💡 Thinking'
+                                 : '⚙️ Task')">
                     </div>
                     <div class="podium-score" th:text="${percentages.get(topRoles[2])} + '%'"></div>
+                    <div class="podium-description" th:text="${topRoles[2].description}"></div>
                 </div>
                 <div class="podium-block third-block">3</div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Top role detail cards -->
+    <div class="role-details">
+        <h2>About Your Top Roles</h2>
+
+        <div class="role-detail-card" th:each="role, iter : ${topRoles}">
+
+            <div class="role-detail-header"
+                 th:classappend="${role.category.name() == 'SOCIAL'} ? 'social'
+                                : (${role.category.name() == 'THINKING'} ? 'thinking'
+                                : 'task')">
+                <span class="role-detail-medal"
+                      th:text="${iter.index == 0} ? '🥇' : (${iter.index == 1} ? '🥈' : '🥉')">
+                </span>
+                <span class="role-detail-name" th:text="${role.displayName}"></span>
+                <span class="role-detail-category"
+                      th:text="${role.category.name() == 'SOCIAL'} ? '🤝 Social'
+                              : (${role.category.name() == 'THINKING'} ? '💡 Thinking'
+                              : '⚙️ Task')">
+                </span>
+            </div>
+
+            <div class="role-detail-body">
+                <p class="role-detail-description" th:text="${role.description}"></p>
+
+                <div class="role-detail-row">
+                    <div class="role-detail-box strengths-box">
+                        <div class="role-detail-box-title">💪 Strengths</div>
+                        <div th:text="${role.strengths}"></div>
+                    </div>
+                    <div class="role-detail-box weaknesses-box">
+                        <div class="role-detail-box-title">⚠️ Allowable Weaknesses</div>
+                        <div th:text="${role.allowableWeaknesses}"></div>
+                    </div>
+                </div>
             </div>
 
         </div>
